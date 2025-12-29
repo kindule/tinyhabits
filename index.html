@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>微习惯养成游戏 - 每天进步一点点</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🌱 微习惯养成游戏</h1>
+            <div class="score-board">
+                <div class="score-item">
+                    <span class="label">总分:</span>
+                    <span class="value" id="totalScore">0</span>
+                </div>
+                <div class="score-item">
+                    <span class="label">连续天数:</span>
+                    <span class="value" id="streak">0</span>
+                </div>
+                <div class="score-item">
+                    <span class="label">等级:</span>
+                    <span class="value" id="level">新手</span>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <!-- 添加习惯区域 -->
+            <section class="add-habit-section" id="addHabitSection">
+                <h2>📝 创建你的微习惯</h2>
+                <p class="hint">按照公式：在我【锚点】之后，我会【微小行为】</p>
+
+                <div class="habit-form">
+                    <div class="form-group">
+                        <label>在我</label>
+                        <input type="text" id="anchorInput" placeholder="例如：刷完牙、起床、吃完午饭" maxlength="20">
+                    </div>
+                    <div class="form-group">
+                        <label>之后，我会</label>
+                        <input type="text" id="behaviorInput" placeholder="例如：做1个俯卧撑、读1页书" maxlength="30">
+                    </div>
+                    <button class="btn-primary" id="addHabitBtn">✨ 创建习惯</button>
+                </div>
+
+                <div class="quick-examples">
+                    <p class="examples-title">💡 快速示例（点击使用）：</p>
+                    <div class="example-tags">
+                        <span class="tag" data-anchor="早上起床" data-behavior="喝一杯水">起床后喝水</span>
+                        <span class="tag" data-anchor="刷完牙" data-behavior="做2个深蹲">刷牙后深蹲</span>
+                        <span class="tag" data-anchor="坐到办公桌前" data-behavior="写下3件待办事项">开工前计划</span>
+                        <span class="tag" data-anchor="打开手机" data-behavior="先做3次深呼吸">手机前深呼吸</span>
+                        <span class="tag" data-anchor="吃完晚饭" data-behavior="读1页书">饭后阅读</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 今日习惯列表 -->
+            <section class="habits-section">
+                <h2>✅ 今日习惯清单</h2>
+                <div id="habitsList" class="habits-list">
+                    <p class="empty-message">还没有习惯，创建你的第一个微习惯吧！</p>
+                </div>
+            </section>
+
+            <!-- 庆祝动画区域 -->
+            <div class="celebration" id="celebration">
+                <div class="celebration-content">
+                    <div class="celebration-emoji">🎉</div>
+                    <div class="celebration-text"></div>
+                </div>
+            </div>
+
+            <!-- 互动游戏区域 -->
+            <div class="game-canvas" id="gameCanvas">
+                <!-- 掉落物品会动态添加到这里 -->
+            </div>
+
+            <!-- 成就系统 -->
+            <section class="achievements-section">
+                <h2>🏆 成就徽章</h2>
+                <div class="achievements-grid" id="achievementsGrid">
+                    <!-- 成就动态生成 -->
+                </div>
+            </section>
+
+            <!-- 统计面板 -->
+            <section class="stats-section">
+                <h2>📊 我的进步</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalCompleted">0</div>
+                        <div class="stat-label">累计完成次数</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="bestStreak">0</div>
+                        <div class="stat-label">最长连续天数</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="habitCount">0</div>
+                        <div class="stat-label">活跃习惯数</div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>💪 每天进步一点点，改变就会发生</p>
+            <button class="btn-secondary" id="resetBtn">重置游戏</button>
+        </footer>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>
