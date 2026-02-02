@@ -7,16 +7,22 @@ function errorHandler(err, req, res, next) {
     let statusCode = err.statusCode || 500;
     let message = err.message || 'Internal Server Error';
 
-    // Mongoose验证错误
-    if (err.name === 'ValidationError') {
+    // Sequelize 验证错误
+    if (err.name === 'SequelizeValidationError') {
         statusCode = 400;
-        message = Object.values(err.errors).map(e => e.message).join(', ');
+        message = err.errors.map(e => e.message).join(', ');
     }
 
-    // Mongoose重复键错误
-    if (err.code === 11000) {
+    // Sequelize 唯一约束错误
+    if (err.name === 'SequelizeUniqueConstraintError') {
         statusCode = 400;
         message = 'Duplicate field value';
+    }
+
+    // Sequelize 数据库错误
+    if (err.name === 'SequelizeDatabaseError') {
+        statusCode = 500;
+        message = 'Database error';
     }
 
     // JWT错误

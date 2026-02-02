@@ -51,7 +51,7 @@ TinyHabits 是一款**基于福格行为模型的习惯养成游戏化应用**�
 |                        TinyHabits 系统边界                         |
 |  +----------------+     +----------------+     +----------------+  |
 |  |  微信小程序     |     |   后端服务      |     |   数据存储      |  |
-|  |  (Frontend)    | <-> |   (Backend)    | <-> |   (MongoDB)    |  |
+|  |  (Frontend)    | <-> |   (Backend)    | <-> |   (MySQL)    |  |
 |  +----------------+     +----------------+     +----------------+  |
 |          ^                      ^                                 |
 |          |                      |                                 |
@@ -108,7 +108,7 @@ graph TB
     end
 
     subgraph "基础设施层 (Infrastructure Layer)"
-        DB[(MongoDB)]
+        DB[(MySQL)]
         WX[微信API]
     end
 
@@ -129,8 +129,8 @@ graph TB
 
 | 能力域 | 核心功能 | 技术实现 |
 |-------|---------|---------|
-| 用户管理 | 注册/登录/信息管理 | JWT + bcrypt + MongoDB |
-| 习惯管理 | CRUD + 完成打卡 | RESTful API + Mongoose |
+| 用户管理 | 注册/登录/信息管理 | JWT + bcrypt + MySQL |
+| 习惯管理 | CRUD + 完成打卡 | RESTful API + Sequelize |
 | 游戏化 | 积分/等级/成就/连续天数 | 业务逻辑计算 |
 | 数据统计 | 历史记录/排行榜 | 聚合查询 |
 | 微信集成 | 小程序登录/用户授权 | 微信开放平台 API |
@@ -143,7 +143,7 @@ sequenceDiagram
     participant MP as 小程序
     participant GW as 网关层
     participant API as API服务
-    participant DB as MongoDB
+    participant DB as MySQL
     participant WX as 微信服务器
 
     U->>MP: 操作触发
@@ -339,7 +339,7 @@ backend/
 ├── src/
 │   ├── server.js              # 应用入口
 │   ├── config/
-│   │   └── database.js        # MongoDB 连接配置
+│   │   └── database.js        # MySQL 连接配置
 │   ├── models/
 │   │   ├── User.js            # 用户模型
 │   │   └── Habit.js           # 习惯模型
@@ -488,7 +488,7 @@ erDiagram
 ### 5.2 User 模型详细设计
 
 ```javascript
-const userSchema = new mongoose.Schema({
+const userSchema = new sequelize.Schema({
   // === 传统认证字段 (可选) ===
   username: {
     type: String,
@@ -557,10 +557,10 @@ userSchema.methods.matchPassword = async function(enteredPassword) {
 ### 5.3 Habit 模型详细设计
 
 ```javascript
-const habitSchema = new mongoose.Schema({
+const habitSchema = new sequelize.Schema({
   // 关联用户
   user: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: sequelize.Schema.Types.ObjectId,
     ref: 'User',
     required: true
   },
@@ -905,7 +905,7 @@ exports.protect = async (req, res, next) => {
 | 密码存储 | bcrypt (cost=10) 单向哈希 |
 | Token 传输 | Bearer Token in Authorization Header |
 | Token 有效期 | 30 天 (可配置) |
-| 敏感字段保护 | Mongoose select: false |
+| 敏感字段保护 | Sequelize select: false |
 | CORS | 白名单域名限制 |
 | 请求体限制 | express.json() 默认 100kb |
 
@@ -1070,11 +1070,11 @@ graph TB
     subgraph "后端"
         NODE[Node.js v18+]
         EXPRESS[Express.js v4.18]
-        MONGOOSE[Mongoose v8.0]
+        SEQUELIZE[Sequelize v6.35]
     end
 
     subgraph "数据存储"
-        MONGO[(MongoDB v6+)]
+        MYSQL_DB[(MySQL v8+)]
         WX_STORAGE[wx.storage 本地存储]
     end
 
@@ -1100,7 +1100,7 @@ graph TB
 | 包名 | 版本 | 用途 |
 |-----|-----|------|
 | express | ^4.18.2 | Web 框架 |
-| mongoose | ^8.0.3 | MongoDB ODM |
+| sequelize | ^8.0.3 | MySQL ODM |
 | bcryptjs | ^2.4.3 | 密码哈希 |
 | jsonwebtoken | ^9.0.2 | JWT 认证 |
 | dotenv | ^16.3.1 | 环境变量 |
@@ -1116,8 +1116,8 @@ graph TB
 | **微信小程序** | 目标用户主要在微信生态，无需下载安装，用完即走 |
 | **Node.js** | JavaScript 全栈统一，异步 I/O 适合处理并发请求 |
 | **Express** | 轻量灵活，生态成熟，中间件丰富 |
-| **MongoDB** | 文档型数据库，Schema 灵活，适合快速迭代 |
-| **Mongoose** | 提供 Schema 验证和中间件，简化数据操作 |
+| **MySQL** | 关系型数据库，成熟稳定，事务支持完善 |
+| **Sequelize** | Node.js ORM，提供模型验证和关联查询 |
 | **JWT** | 无状态认证，适合移动端，易于扩展 |
 
 ---
@@ -1146,7 +1146,7 @@ graph TB
         end
 
         subgraph "数据层"
-            MONGO[(MongoDB)]
+            MYSQL_DB[(MySQL)]
         end
     end
 
@@ -1159,7 +1159,7 @@ graph TB
     MP --> NGINX
     NGINX --> PM2
     PM2 --> APP
-    APP --> MONGO
+    APP --> MYSQL_DB
     APP --> WX_API
 ```
 
@@ -1169,7 +1169,11 @@ graph TB
 ```env
 NODE_ENV=development
 PORT=3000
-MONGODB_URI=mongodb://localhost:27017/tinyhabits_dev
+MYSQL_HOST=localhost
+MYSQL_PORT=3306
+MYSQL_DATABASE=tinyhabits_dev
+MYSQL_USER=root
+MYSQL_PASSWORD=your-password
 JWT_SECRET=dev-secret-key
 JWT_EXPIRE=30d
 WX_APPID=your-dev-appid
@@ -1180,7 +1184,11 @@ WX_SECRET=your-dev-secret
 ```env
 NODE_ENV=production
 PORT=3000
-MONGODB_URI=mongodb://user:pass@mongodb-host:27017/tinyhabits?authSource=admin
+MYSQL_HOST=mysql-host.example.com
+MYSQL_PORT=3306
+MYSQL_DATABASE=tinyhabits
+MYSQL_USER=tinyhabits_user
+MYSQL_PASSWORD=<强随机密码>
 JWT_SECRET=<强随机密钥>
 JWT_EXPIRE=30d
 WX_APPID=your-prod-appid
@@ -1294,7 +1302,7 @@ habitSchema.add({
 ```javascript
 // 扩展 User Schema
 userSchema.add({
-  friends: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+  friends: [{ type: sequelize.Schema.Types.ObjectId, ref: 'User' }],
   privacy: {
     showOnLeaderboard: { type: Boolean, default: true },
     showStreak: { type: Boolean, default: true }
@@ -1319,7 +1327,7 @@ app.use('/api/v2/habits', require('./routes/v2/habits'));
 graph LR
     CLIENT[客户端] --> API[API 服务]
     API --> REDIS[(Redis 缓存)]
-    REDIS --> MONGO[(MongoDB)]
+    REDIS --> MYSQL_DB[(MySQL)]
 
     subgraph "缓存策略"
         C1[用户游戏数据: 5分钟]
@@ -1359,7 +1367,7 @@ graph TB
         N2[Node 实例 2]
         N3[Node 实例 3]
 
-        RS[(MongoDB 副本集)]
+        RS[(MySQL 副本集)]
         M1[Primary]
         M2[Secondary]
         M3[Arbiter]
@@ -1378,8 +1386,8 @@ const connectDB = async () => {
   let retries = 5;
   while (retries > 0) {
     try {
-      await mongoose.connect(process.env.MONGODB_URI);
-      console.log('MongoDB Connected');
+      await sequelize.connect(process.env.MYSQL_HOST);
+      console.log('MySQL Connected');
       return;
     } catch (error) {
       retries--;
@@ -1430,7 +1438,7 @@ app.use((err, req, res, next) => {
 | 安全措施 | 实现 |
 |---------|-----|
 | XSS 防护 | 输入校验 + 输出转义 |
-| SQL 注入 | Mongoose 参数化查询 |
+| SQL 注入 | Sequelize 参数化查询 |
 | CSRF | 无状态 JWT (无需) |
 | 敏感信息 | 环境变量 + select: false |
 | 速率限制 | express-rate-limit (建议) |
@@ -1460,7 +1468,7 @@ tinyhabits/
 │   ├── src/
 │   │   ├── server.js           # Express 应用入口
 │   │   ├── config/
-│   │   │   └── database.js     # MongoDB 连接
+│   │   │   └── database.js     # MySQL 连接
 │   │   ├── models/
 │   │   │   ├── User.js         # 用户模型
 │   │   │   └── Habit.js        # 习惯模型
@@ -1507,8 +1515,8 @@ tinyhabits/
 ### B. 快速启动指南
 
 ```bash
-# 1. 启动 MongoDB
-mongod --dbpath /data/db
+# 1. 启动 MySQL
+# 确保 MySQL 服务运行中
 
 # 2. 配置环境变量
 cd backend
@@ -1532,7 +1540,11 @@ curl http://localhost:3000/health
 | 配置项 | 说明 | 默认值 |
 |-------|-----|-------|
 | PORT | 服务端口 | 3000 |
-| MONGODB_URI | 数据库连接 | mongodb://localhost:27017/tinyhabits |
+| MYSQL_HOST | MySQL 主机 | localhost |
+| MYSQL_PORT | MySQL 端口 | 3306 |
+| MYSQL_DATABASE | 数据库名 | tinyhabits |
+| MYSQL_USER | MySQL 用户名 | 必须设置 |
+| MYSQL_PASSWORD | MySQL 密码 | 必须设置 |
 | JWT_SECRET | JWT 密钥 | 必须设置 |
 | JWT_EXPIRE | Token 有效期 | 30d |
 | WX_APPID | 小程序 AppID | 必须设置 |

@@ -1,8 +1,17 @@
 const express = require('express');
-const mongoose = require('mongoose');
+const { sequelize } = require('../models');
 const router = express.Router();
 
 router.get('/', async (req, res) => {
+    let dbStatus = 'disconnected';
+
+    try {
+        await sequelize.authenticate();
+        dbStatus = 'connected';
+    } catch (error) {
+        dbStatus = 'disconnected';
+    }
+
     const healthcheck = {
         status: 'ok',
         timestamp: new Date().toISOString(),
@@ -10,7 +19,7 @@ router.get('/', async (req, res) => {
         environment: process.env.NODE_ENV || 'development',
         version: process.env.npm_package_version || '1.0.0',
         services: {
-            database: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected'
+            database: dbStatus
         }
     };
 

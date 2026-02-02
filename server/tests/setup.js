@@ -1,25 +1,31 @@
-const mongoose = require('mongoose');
-const { MongoMemoryServer } = require('mongodb-memory-server');
+const { Sequelize } = require('sequelize');
 
-let mongoServer;
+let sequelize;
 
 beforeAll(async () => {
-    mongoServer = await MongoMemoryServer.create();
-    const uri = mongoServer.getUri();
-    await mongoose.connect(uri);
+    // 使用 SQLite 内存数据库进行测试
+    sequelize = new Sequelize({
+        dialect: 'sqlite',
+        storage: ':memory:',
+        logging: false
+    });
+
+    // 同步所有模型
+    await sequelize.sync({ force: true });
 });
 
 afterAll(async () => {
-    await mongoose.disconnect();
-    if (mongoServer) {
-        await mongoServer.stop();
+    if (sequelize) {
+        await sequelize.close();
     }
 });
 
 afterEach(async () => {
-    const collections = mongoose.connection.collections;
-    for (const key in collections) {
-        const collection = collections[key];
-        await collection.deleteMany();
+    // 清理所有表数据
+    const models = Object.values(sequelize.models);
+    for (const model of models) {
+        await model.destroy({ where: {}, truncate: true });
     }
 });
+
+module.exports = { sequelize };

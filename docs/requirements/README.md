@@ -387,11 +387,11 @@ graph TB
 | M-014 | 页面导航 | 实现5个页面导航(onboarding/role/wishes/workshop/daily),按流程线性跳转 | 用户能从Onboarding一路完成到Daily | 0.5天 |
 | M-015 | UI组件复用 | 在app.wxss定义全局组件class(PageShell/DialogueBubble/MainCard/PrimaryButton/SecondaryButton/BubbleChip/TagPill) | 所有页面复用统一组件,无重复样式代码 | 1.5天 |
 | M-016 | 动效实现 | 实现关键动效:对话出现/卡片弹跳/气泡弹出/裂隙击碎/闪光扫过/光晕呼吸(用@keyframes+class切换) | 所有主要交互都有按压缩放/回弹反馈 | 1天 |
-| M-017 | 后端服务搭建 | 实现Node.js/Express后端,MongoDB数据库,JWT认证,基础API路由(auth/habits/stats) | 后端服务可正常启动,健康检查端点可访问 | 3天 |
+| M-017 | 后端服务搭建 | 实现Node.js/Express后端,MySQL数据库,JWT认证,基础API路由(auth/habits/stats) | 后端服务可正常启动,健康检查端点可访问 | 3天 |
 | M-018 | AI锚点生成 | 集成LangChain+DeepSeek/豆包,实现锚点生成API(/api/ai/generate-anchors),用户选择行为后AI生成3-5个锚点建议 | AI能生成合理的锚点建议,响应时间<3秒,失败时降级到预设库 | 2天 |
 | M-019 | AI MAP评估 | 实现MAP模型评估API(/api/ai/evaluate-map),生成卡组前AI评估每张卡的动机+能力+提示,给出Pass/Warning/Fail | AI能准确评估卡片问题,对话式反馈自然温和 | 2天 |
 | M-020 | 前端网络层 | 实现miniprogram/utils/api.js,封装wx.request,实现AI相关接口调用,错误处理和降级逻辑 | 前端能成功调用后端AI接口,网络失败时有友好提示 | 1天 |
-| M-021 | 数据同步机制 | 实现用户数据在前端本地存储和后端MongoDB之间的同步,卡片数据增加anchor/anchorEmoji字段 | 用户数据能正确同步,退出重进后数据保持 | 1.5天 |
+| M-021 | 数据同步机制 | 实现用户数据在前端本地存储和后端MySQL之间的同步,卡片数据增加anchor/anchorEmoji字段 | 用户数据能正确同步,退出重进后数据保持 | 1.5天 |
 
 **Must Have 小计: 约25.5天(按1人全职计算,包含后端+AI开发)**
 
@@ -1100,7 +1100,7 @@ completeDay7() {
 | 微信小程序平台稳定性 | 外部依赖 | 低 | 微信平台成熟,风险低;定期关注微信官方公告 |
 | 用户有微信账号 | 外部依赖 | 低 | 目标用户均为微信用户,风险低 |
 | DeepSeek/豆包API可用性 | 外部依赖 | 中 | 双模型热备+降级方案,确保服务可用性 |
-| MongoDB云服务 | 外部依赖 | 低 | 使用成熟云服务(如MongoDB Atlas)或自建 |
+| MySQL云服务 | 外部依赖 | 低 | 使用成熟云服务(如MySQL Atlas)或自建 |
 | 内容库人工编写 | 内部依赖 | 中 | 提前准备MVP最小内容量(120个行为+20条规则+60条台词) |
 | 设计资源(插画/动效) | 内部依赖 | 中 | MVP用CSS渐变+几何图形模拟插画,降低对设计师依赖 |
 | 开发资源(全栈开发) | 内部依赖 | 高 | 确保开发周期≥6周,包含后端+AI集成 |

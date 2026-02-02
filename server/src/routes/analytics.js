@@ -34,7 +34,7 @@ router.post('/events', async (req, res) => {
             events.forEach(e => console.log(`  - ${e.event}:`, JSON.stringify(e.properties)));
         }
 
-        // TODO: Store to MongoDB 'Analytics' collection
+        // TODO: Store to MySQL 'analytics' table
 
         // 异步处理，快速响应
         res.json({ success: true, received: events.length });

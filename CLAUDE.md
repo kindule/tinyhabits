@@ -24,9 +24,13 @@ curl http://localhost:3000/api/health
 ```
 
 ### Prerequisites
-- MongoDB running on `localhost:27017` (or set `MONGODB_URI`)
+- MySQL running on `localhost:3306` (or configure via environment variables)
 - Configure `server/.env`:
-  - `MONGODB_URI` - MongoDB connection string
+  - `MYSQL_HOST` - MySQL host (default: localhost)
+  - `MYSQL_PORT` - MySQL port (default: 3306)
+  - `MYSQL_DATABASE` - Database name (default: tinyhabits)
+  - `MYSQL_USER` - MySQL username
+  - `MYSQL_PASSWORD` - MySQL password
   - `JWT_SECRET` - JWT signing key
   - `DEEPSEEK_API_KEY` - For AI anchor generation
   - `DOUBAO_API_KEY` - Fallback AI provider
@@ -49,7 +53,7 @@ tinyhabits/
 │   └── src/
 │       ├── routes/       # API endpoints (ai, auth, users, analytics, health)
 │       ├── services/     # Business logic (anchorService, mapService, dialogueService)
-│       ├── models/       # Mongoose schemas (User, GameState)
+│       ├── models/       # Sequelize models (User, GameState, DeckCard, etc.)
 │       └── config/       # App configuration
 └── docs/                 # Design & requirements documentation
 ```
@@ -129,7 +133,13 @@ Fallback: If DeepSeek fails, switches to 豆包; if both fail, uses preset libra
 ```javascript
 {
   port: 3000,
-  mongodb: { uri: 'mongodb://localhost:27017/tinyhabits' },
+  mysql: {
+    host: 'localhost',
+    port: 3306,
+    database: 'tinyhabits',
+    username: 'root',
+    password: '...'
+  },
   jwt: { secret: '...', expiresIn: '7d' },
   ai: { deepseekApiKey, doubaoApiKey, timeout: 10000 },
   rateLimit: { windowMs: 60000, max: 100 }
