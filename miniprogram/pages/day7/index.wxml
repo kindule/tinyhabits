@@ -1,0 +1,74 @@
+<view class="page day7-page">
+  <!-- 对话区 -->
+  <view class="dialogue-wrap">
+    <dialogue-bubble 
+      wx:if="{{showDialogue1}}"
+      character="arc"
+      text="第一座愿望城修复完成。"
+      animate="{{true}}"
+    />
+    <view style="height: 20rpx"></view>
+    <dialogue-bubble 
+      wx:if="{{showDialogue2}}"
+      character="arc"
+      text="微光会带你去下一座城。"
+      animate="{{true}}"
+    />
+  </view>
+  
+  <!-- 愿望城动画区 -->
+  <view class="city-animation {{showCity ? 'visible' : ''}}">
+    <view class="city-container {{cityPhase}}">
+      <!-- 城市轮廓 -->
+      <view class="city-silhouette">
+        <view class="building main-building"></view>
+        <view class="building side-building left"></view>
+        <view class="building side-building right"></view>
+      </view>
+      
+      <!-- 金色光芒 -->
+      <view class="golden-glow" wx:if="{{showGlow}}"></view>
+      
+      <!-- 粒子效果 -->
+      <view class="particles" wx:if="{{showParticles}}">
+        <view class="particle" wx:for="{{12}}" wx:key="index" style="--delay: {{index * 0.1}}s"></view>
+      </view>
+    </view>
+    
+    <text class="city-name">{{currentWishName}}</text>
+    <text class="city-status">✨ 修复完成 ✨</text>
+  </view>
+  
+  <!-- 成就统计 -->
+  <view class="achievement-section {{showAchievement ? 'visible' : ''}}">
+    <text class="section-title">本次成就</text>
+    <view class="achievement-list">
+      <view class="achievement-item">
+        <text class="achievement-icon">🔥</text>
+        <text class="achievement-label">连续</text>
+        <text class="achievement-value">{{streak}}天</text>
+      </view>
+      <view class="achievement-item">
+        <text class="achievement-icon">📊</text>
+        <text class="achievement-label">积分</text>
+        <text class="achievement-value">+70</text>
+      </view>
+      <view class="achievement-item">
+        <text class="achievement-icon">📖</text>
+        <text class="achievement-label">解锁</text>
+        <text class="achievement-value">{{spellCount}}个咒语</text>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 底部按钮 -->
+  <view class="footer safe-bottom {{showButtons ? 'visible' : ''}}">
+    <primary-button 
+      text="选择下一座愿望城"
+      bind:tap="onSelectNewWish"
+    />
+    <button class="btn-secondary" bindtap="onContinueCurrent">
+      继续当前愿望城
+    </button>
+  </view>
+</view>

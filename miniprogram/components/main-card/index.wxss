@@ -1,0 +1,40 @@
+/* components/main-card/index.wxss */
+.main-card {
+  background: var(--c-bg-card, #fff);
+  border-radius: var(--radius-card, 28rpx);
+  padding: var(--card-pad, 22rpx);
+  box-shadow: var(--shadow-card, 0 12rpx 30rpx rgba(0, 0, 0, 0.06));
+  border: 1rpx solid rgba(31, 42, 55, 0.06);
+  transition: transform 180ms ease-out, box-shadow 180ms ease-out;
+  position: relative;
+}
+
+.main-card:active {
+  transform: scale(0.98);
+  box-shadow: 0 6rpx 15rpx rgba(0, 0, 0, 0.04);
+}
+
+.main-card.selected {
+  border: 2rpx solid var(--c-gold, #F6C85F);
+  animation: cardBounce 180ms ease-out;
+}
+
+.main-card.selected::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-card, 28rpx);
+  box-shadow: 0 0 20rpx rgba(246, 200, 95, 0.3);
+  pointer-events: none;
+}
+
+.main-card.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+@keyframes cardBounce {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.03); }
+  100% { transform: scale(1); }
+}

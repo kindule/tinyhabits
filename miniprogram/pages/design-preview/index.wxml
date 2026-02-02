@@ -1,0 +1,49 @@
+<view class="page preview-page">
+  <view class="section">
+    <view class="title">Dialogue Bubble</view>
+    <dialogue-bubble character="arc" text="我是弧光导师 Arc" />
+    <view style="height: 20rpx"></view>
+    <dialogue-bubble character="mia" text="我是米娅 MIA" />
+    <view style="height: 20rpx"></view>
+    <dialogue-bubble character="rift" text="我是裂隙 Rift" />
+  </view>
+
+  <view class="section">
+    <view class="title">Main Card</view>
+    <main-card>
+      <view class="p-md">普通卡片</view>
+    </main-card>
+    <view style="height: 20rpx"></view>
+    <main-card selected="{{true}}">
+      <view class="p-md">选中卡片</view>
+    </main-card>
+  </view>
+
+  <view class="section">
+    <view class="title">Buttons</view>
+    <primary-button text="主按钮" />
+    <view style="height: 20rpx"></view>
+    <primary-button text="加载中" loading="{{true}}" />
+    <view style="height: 20rpx"></view>
+    <primary-button text="禁用" disabled="{{true}}" />
+  </view>
+
+  <view class="section">
+    <view class="title">Bubble Chips</view>
+    <view class="flex-wrap">
+      <bubble-chip text="Chips" />
+      <bubble-chip text="Selected" selected="{{true}}" />
+      <bubble-chip text="With Delay" delay="{{500}}" />
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="title">Tags</view>
+    <view class="flex-wrap">
+      <tag-pill text="Default" />
+      <tag-pill text="Gold" type="gold" />
+      <tag-pill text="Purple" type="purple" />
+      <tag-pill text="Success" type="success" />
+    </view>
+  </view>
+</view>

@@ -1,0 +1,111 @@
+<view class="page wishes-page">
+  <!-- 对话区 -->
+  <view class="dialogue-wrap">
+    <dialogue-bubble 
+      character="arc"
+      text="{{stage === 'duel' ? '如果只能靠近一个，你会选择...?' : '你的核心愿望是...'}}"
+      animate="{{true}}"
+    />
+  </view>
+  
+  <view class="content">
+    <!-- 阶段A: 两两对决 -->
+    <view wx:if="{{stage === 'duel'}}" class="duel-container">
+      <view class="flexBetween mbMd">
+        <view class="titleH2">愿望对决</view>
+        <tag-pill text="第 {{roundIndex + 1}}/{{totalRounds}} 轮" type="purple" />
+      </view>
+      
+      <view class="grid2">
+        <!-- 左卡片 -->
+        <main-card 
+          selected="{{selectedId === leftWish.id}}"
+          bind:tap="onSelectWish"
+          data-id="{{leftWish.id}}"
+        >
+          <view class="wish-card-content">
+            <view class="wish-icon">{{leftWish.icon}}</view>
+            <view class="wish-name">{{leftWish.name}}</view>
+            <view class="wish-desc">{{leftWish.desc}}</view>
+          </view>
+        </main-card>
+        
+        <!-- 右卡片 -->
+        <main-card 
+          selected="{{selectedId === rightWish.id}}"
+          bind:tap="onSelectWish"
+          data-id="{{rightWish.id}}"
+        >
+          <view class="wish-card-content">
+            <view class="wish-icon">{{rightWish.icon}}</view>
+            <view class="wish-name">{{rightWish.name}}</view>
+            <view class="wish-desc">{{rightWish.desc}}</view>
+          </view>
+        </main-card>
+      </view>
+      
+      <view class="textSub textCenter mtMd">
+        选择更想靠近的那个
+      </view>
+      
+      <!-- Progress Bar optional, implied by tag-pill -->
+    </view>
+
+    <!-- 阶段B: 命运盘 -->
+    <view wx:if="{{stage === 'destiny'}}" class="destiny-container">
+      <view class="titleH2 mbMd">命运盘</view>
+      
+      <!-- 核心愿望 -->
+      <view class="destiny-core-wrap mbLg">
+        <view class="destiny-ring"></view>
+        <view class="core-card-wrap">
+            <main-card selected="{{true}}">
+              <view class="wish-card-content core">
+                <view class="wish-icon">{{coreWish.icon}}</view>
+                <view class="wish-name">{{coreWish.name}}</view>
+                <tag-pill text="核心愿望" type="gold" />
+              </view>
+            </main-card>
+        </view>
+      </view>
+
+      <view class="mbSm textSub">点击任意愿望替换核心愿望</view>
+
+      <view class="mbMd">
+        <view class="textSub mbSm">主线愿望</view>
+        <view class="flex-wrap">
+          <bubble-chip
+            wx:for="{{mainWishes}}"
+            wx:key="id"
+            text="{{item.name}}"
+            bind:tap="onSwapCore"
+            data-id="{{item.id}}"
+            delay="{{index * 50}}"
+          />
+        </view>
+      </view>
+
+      <view>
+        <view class="textSub mbSm">以后再说</view>
+        <view class="flex-wrap">
+          <bubble-chip
+            wx:for="{{laterWishes}}"
+            wx:key="id"
+            text="{{item.name}}"
+            bind:tap="onSwapCore"
+            data-id="{{item.id}}"
+            delay="{{(index + 2) * 50}}"
+          />
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="footer">
+    <primary-button
+      wx:if="{{stage === 'destiny'}}"
+      text="确认核心愿望"
+      bind:tap="onConfirm"
+    />
+  </view>
+</view>

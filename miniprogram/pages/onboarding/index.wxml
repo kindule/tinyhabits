@@ -1,0 +1,32 @@
+<view class="page onboarding-page">
+  <!-- 场景区 -->
+  <view class="scene-header">
+    <view class="scene-bg"></view>
+    <view class="city-silhouette"></view>
+    <view class="rift-overlay"></view>
+  </view>
+  
+  <!-- 对话区 -->
+  <view class="dialogue-wrap">
+    <dialogue-bubble 
+      wx:if="{{showDialogue}}"
+      character="arc"
+      text="{{dialogueText}}"
+      animate="{{true}}"
+    />
+  </view>
+  
+  <!-- 故事文案 -->
+  <view class="story-wrap {{showStory ? 'visible' : ''}}">
+    <text class="story-text">{{storyText}}</text>
+  </view>
+  
+  <!-- 底部按钮 -->
+  <view class="footer safe-bottom">
+    <primary-button 
+      wx:if="{{showButton}}"
+      text="开始修复"
+      bind:tap="onStart"
+    />
+  </view>
+</view>

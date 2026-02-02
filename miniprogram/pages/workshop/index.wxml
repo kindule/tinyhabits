@@ -1,0 +1,165 @@
+<view class="page workshop-page">
+  <view class="sceneHeader sceneHeader--workshop">
+     <view class="sceneOrb sceneOrb--workshop"></view>
+  </view>
+
+  <!-- 对话区 -->
+  <view class="dialogue-wrap">
+    <dialogue-bubble 
+      character="mia"
+      text="{{dialogueText}}"
+      animate="{{true}}"
+    />
+  </view>
+  
+  <view class="content">
+    <!-- 愿望水晶区 -->
+    <view class="crystal-area mbMd">
+        <view class="crystal {{summoning ? 'summoning' : ''}}">
+        <text class="crystal-icon">🔮</text>
+        </view>
+        
+        <!-- 召唤出的行为气泡 -->
+        <view class="summoned-bubbles" wx:if="{{summonedBehaviors.length > 0}}">
+            <view class="bubble-wrap" 
+                wx:for="{{summonedBehaviors}}" 
+                wx:key="id"
+                style="animation-delay: {{index * 100}}ms"
+            >
+                <bubble-chip 
+                    text="{{item.name}}"
+                    selected="{{selectedSummon === item.id}}"
+                    bind:tap="onSummonedTap"
+                    data-id="{{item.id}}"
+                />
+            </view>
+        </view>
+    </view>
+  
+    <!-- 操作按钮组 -->
+    <view class="action-buttons mbMd">
+        <view class="action-btn {{summoning ? 'disabled' : ''}}" bindtap="onSummonTap">
+            <text>✨ 召唤</text>
+        </view>
+        <view class="action-btn {{!canSplit ? 'disabled' : ''}}" bindtap="onSplitTap">
+            <text>⚡ 裂变</text>
+        </view>
+        <view class="action-btn {{!canMerge ? 'disabled' : ''}}" bindtap="onMergeTap">
+            <text>🔗 合成</text>
+        </view>
+    </view>
+  
+    <!-- 素材区 -->
+    <view class="material-area">
+        <view class="flexBetween mbSm">
+            <view class="titleH2">素材区 ({{materialArea.length}})</view>
+            <view class="textSub">选中并组合</view>
+        </view>
+        <scroll-view class="material-list" scroll-x="{{true}}">
+            <view class="material-track">
+                <bubble-chip 
+                    wx:for="{{materialArea}}"
+                    wx:key="id"
+                    text="{{item.anchorEmoji || '✨'}}{{item.anchor ? item.anchor + '→' : ''}}{{item.name}}"
+                    selected="{{item._selected}}"
+                    bind:tap="onMaterialTap"
+                    data-id="{{item.id}}"
+                />
+                <view wx:if="{{materialArea.length === 0}}" class="empty-hint textSub">
+                    点击上方按钮召唤灵感...
+                </view>
+            </view>
+        </scroll-view>
+    </view>
+
+  </view>
+  
+  <!-- 底部按钮 -->
+  <view class="footer">
+    <primary-button 
+      text="生成今日卡组"
+      disabled="{{materialArea.length < 1}}"
+      loading="{{generating}}"
+      bind:tap="onGenerateTap"
+    />
+  </view>
+
+  <!-- 锚点选择浮层 -->
+  <view class="modal-overlay {{showAnchorModal ? 'visible' : ''}}" bindtap="closeAnchorModal">
+    <view class="modal-content" catchtap="stopProp">
+      <view class="titleH2 mbMd textCenter">选择施放时机</view>
+      <view class="textSub mbMd textCenter">这个微行动，最适合什么时候做？</view>
+      
+      <view class="grid2 anchor-grid">
+        <view 
+          wx:for="{{anchorOptions}}"
+          wx:key="text"
+          class="anchor-option pressable"
+          hover-class="is-pressed"
+          bindtap="onAnchorSelect"
+          data-anchor="{{item}}"
+        >
+          <text class="anchor-emoji">{{item.emoji}}</text>
+          <text class="anchor-text">{{item.text}}</text>
+        </view>
+      </view>
+
+      <view wx:if="{{loadingAnchors}}" class="textCenter mtMd textSub">
+        ⏳ 正在分析最佳时机...
+      </view>
+    </view>
+  </view>
+
+  <!-- 裂变结果浮层 -->
+  <view class="modal-overlay {{showSplitModal ? 'visible' : ''}}" bindtap="closeSplitModal">
+    <view class="modal-content" catchtap="stopProp">
+      <view class="titleH2 mbMd textCenter">裂变选择</view>
+      <view class="textSub mbMd textCenter">选择要加入素材区的微行动</view>
+      
+      <view class="flex-col gapMd">
+        <block wx:for="{{splitResults}}" wx:key="id">
+            <main-card bind:tap="onSplitResultTap" data-behavior="{{item}}">
+                <view class="flexBetween">
+                    <text class="wishName">{{item.name}}</text>
+                    <text class="wishDesc">{{item.seconds}}秒</text>
+                </view>
+            </main-card>
+        </block>
+      </view>
+    </view>
+  </view>
+
+   <!-- 卡组预览浮层 -->
+  <view class="modal-overlay {{showDeckPreview ? 'visible' : ''}}">
+    <view class="modal-content deck-preview-content">
+      <view class="titleH2 mbMd textCenter">今日卡组</view>
+      
+      <view class="deck-list mbMd">
+        <view wx:for="{{generatedDeck}}" wx:key="id" class="deck-item-wrap">
+             <main-card>
+                <view class="deck-card-content">
+                    <view class="flexBetween mbSm">
+                        <tag-pill text="{{item.type === 'base' ? '保底卡' : item.type === 'main' ? '主线卡' : '彩蛋卡'}}" 
+                            type="{{item.type === 'base' ? 'default' : item.type === 'main' ? 'purple' : 'gold'}}" />
+                        <text class="textSub">{{item.seconds}}秒</text>
+                    </view>
+                    <view class="titleH2 mbSm">{{item.name}}</view>
+                    <view class="textSub">{{item.anchor ? '🕒 ' + item.anchor : ''}}</view>
+                </view>
+             </main-card>
+        </view>
+      </view>
+
+      <view class="mbMd">
+        <view class="textSub textCenter mbSm">MAP评估</view>
+        <view class="textCenter highlight">{{mapResult.overall === 'Pass' ? '✅ 难度适宜' : '⚠️ 可能有点难'}}</view>
+      </view>
+
+      <primary-button 
+        text="确认并开始"
+        bind:tap="onConfirmDeck"
+      />
+    </view>
+  </view>
+
+</view>

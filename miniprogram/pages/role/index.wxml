@@ -1,0 +1,42 @@
+<view class="page role-page">
+  <!-- 对话区 -->
+  <view class="dialogue-wrap">
+    <dialogue-bubble 
+      character="arc"
+      text="{{dialogueText}}"
+      animate="{{true}}"
+    />
+  </view>
+  
+  <!-- 天赋卡片网格 -->
+  <view class="talent-grid">
+    <main-card 
+      wx:for="{{talents}}" 
+      wx:key="id"
+      selected="{{selectedId === item.id}}"
+      bind:tap="onTalentTap"
+      data-id="{{item.id}}"
+    >
+      <view class="talent-card-content">
+        <text class="talent-icon">{{item.icon}}</text>
+        <text class="talent-name">{{item.name}}</text>
+        <text class="talent-desc">{{item.desc}}</text>
+        <text class="talent-bonus">{{item.bonus}}</text>
+      </view>
+    </main-card>
+  </view>
+  
+  <!-- 已选择提示 -->
+  <view class="selected-hint {{selectedId ? 'visible' : ''}}">
+    <text>{{selectedTalent ? selectedTalent.name + '的微光法师' : ''}}</text>
+  </view>
+  
+  <!-- 底部按钮 -->
+  <view class="footer safe-bottom">
+    <primary-button 
+      text="确认天赋"
+      disabled="{{!selectedId}}"
+      bind:tap="onConfirm"
+    />
+  </view>
+</view>

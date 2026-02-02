@@ -1,0 +1,80 @@
+/* pages/role/index.wxss */
+.role-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--c-bg); /* Use global bg or specific gradient */
+}
+
+.dialogue-wrap {
+  padding: var(--page-pad);
+  padding-top: 40rpx;
+  /* Space for top status bar if needed, usually handled by custom nav */
+}
+
+/* 天赋卡片网格 */
+.talent-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--gap-md); /* data.js talents are 4, 2x2 grid */
+  padding: var(--page-pad);
+  flex: 1;
+}
+
+.talent-card-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--gap-md) 0;
+  text-align: center;
+}
+
+.talent-icon {
+  font-size: 64rpx;
+  margin-bottom: var(--gap-md);
+}
+
+.talent-name {
+  font-size: var(--font-h2);
+  font-weight: 600;
+  color: var(--c-text);
+  margin-bottom: 8rpx;
+}
+
+.talent-desc {
+  font-size: var(--font-cap);
+  color: var(--c-subtext);
+  margin-bottom: 8rpx;
+}
+
+.talent-bonus {
+  font-size: var(--font-cap);
+  color: var(--c-purple);
+  font-weight: 500;
+}
+
+/* 选中提示 */
+.selected-hint {
+  text-align: center;
+  padding: var(--gap-md);
+  opacity: 0;
+  transform: translateY(10rpx);
+  transition: all 200ms ease-out;
+  min-height: 60rpx;
+}
+
+.selected-hint.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.selected-hint text {
+  font-size: var(--font-body);
+  color: var(--c-gold);
+  font-weight: 600;
+}
+
+.footer {
+  padding: var(--page-pad);
+  padding-bottom: calc(var(--page-pad) + env(safe-area-inset-bottom));
+}

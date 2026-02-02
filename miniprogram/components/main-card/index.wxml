@@ -1,0 +1,6 @@
+<view 
+  class="main-card {{selected ? 'selected' : ''}} {{disabled ? 'disabled' : ''}}"
+  bindtap="onTap"
+>
+  <slot></slot>
+</view>

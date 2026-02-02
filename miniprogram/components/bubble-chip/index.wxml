@@ -1,0 +1,6 @@
+<view 
+  class="bubble-chip {{visible ? 'visible' : ''}} {{selected ? 'selected' : ''}}"
+  bindtap="onTap"
+>
+  <text>{{text}}</text>
+</view>

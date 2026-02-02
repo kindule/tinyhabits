@@ -1,0 +1,32 @@
+{
+    "name": "tinyhabits-server",
+    "version": "1.0.0",
+    "description": "点点微习惯游戏后端服务",
+    "main": "src/server.js",
+    "scripts": {
+        "start": "node src/server.js",
+        "dev": "nodemon src/server.js",
+        "test": "jest --coverage"
+    },
+    "dependencies": {
+        "@langchain/community": "^0.0.1",
+        "@langchain/core": "^1.1.18",
+        "@langchain/openai": "^1.2.4",
+        "axios": "^1.13.4",
+        "cors": "^2.8.5",
+        "dotenv": "^16.3.1",
+        "express": "^4.18.2",
+        "express-rate-limit": "^7.1.5",
+        "helmet": "^7.1.0",
+        "jsonwebtoken": "^9.0.2",
+        "langchain": "^0.1.0",
+        "mongoose": "^8.0.0",
+        "morgan": "^1.10.0"
+    },
+    "devDependencies": {
+        "jest": "^29.7.0",
+        "mongodb-memory-server": "^11.0.1",
+        "nodemon": "^3.0.0",
+        "supertest": "^6.3.3"
+    }
+}

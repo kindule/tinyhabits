@@ -1,0 +1,120 @@
+/* pages/onboarding/index.wxss */
+.onboarding-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--c-bg);
+}
+
+/* 场景区 */
+.scene-header {
+  height: 480rpx; /* Increased height */
+  position: relative;
+  overflow: hidden;
+}
+
+.scene-bg {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, 
+    rgba(43, 27, 61, 0.3) 0%, 
+    rgba(94, 200, 216, 0.26) 50%, 
+    rgba(250, 251, 255, 1) 100%
+  );
+}
+
+/* 城市轮廓(CSS绘制) */
+.city-silhouette {
+  position: absolute;
+  bottom: 80rpx;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 240rpx;
+  height: 140rpx;
+  background: linear-gradient(135deg, #2B1B3D 0%, #5E4C7A 100%);
+  border-radius: 20rpx 20rpx 0 0;
+  opacity: 0.6;
+}
+
+.city-silhouette::before,
+.city-silhouette::after {
+  content: '';
+  position: absolute;
+  background: inherit;
+  border-radius: 10rpx 10rpx 0 0;
+}
+
+.city-silhouette::before {
+  width: 90rpx;
+  height: 90rpx;
+  left: -70rpx;
+  bottom: 0;
+}
+
+.city-silhouette::after {
+  width: 70rpx;
+  height: 70rpx;
+  right: -50rpx;
+  bottom: 0;
+}
+
+/* 裂隙覆盖效果 */
+.rift-overlay {
+  position: absolute;
+  inset: 0;
+  background: 
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 10rpx,
+      rgba(43, 27, 61, 0.05) 10rpx,
+      rgba(43, 27, 61, 0.05) 20rpx
+    );
+  animation: riftPulse 4s ease-in-out infinite;
+}
+
+@keyframes riftPulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.6; }
+}
+
+/* 对话区 */
+.dialogue-wrap {
+  padding: 0 var(--page-pad);
+  min-height: 160rpx;
+  position: relative;
+  z-index: 10;
+  margin-top: -60rpx; /* Overlap scene */
+}
+
+/* 故事文案 */
+.story-wrap {
+  flex: 1;
+  padding: 40rpx var(--page-pad);
+  text-align: center;
+  opacity: 0;
+  transform: translateY(20rpx);
+  transition: all 400ms ease-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.story-wrap.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.story-text {
+  font-size: var(--font-body);
+  color: var(--c-subtext);
+  line-height: 2;
+  white-space: pre-line;
+}
+
+/* 底部区 */
+.footer {
+  margin-top: auto;
+  padding: var(--page-pad);
+  padding-bottom: calc(var(--page-pad) + env(safe-area-inset-bottom));
+}

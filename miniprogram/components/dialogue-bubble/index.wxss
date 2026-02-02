@@ -1,0 +1,66 @@
+/* components/dialogue-bubble/index.wxss */
+.dialogue-bubble {
+  display: flex;
+  align-items: flex-start;
+  gap: 16rpx;
+  opacity: 0;
+  transform: translateY(10rpx);
+}
+
+.dialogue-bubble.animate-in {
+  animation: dialogueIn 200ms ease-out forwards;
+}
+
+.avatar {
+  width: 84rpx;
+  height: 84rpx;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.avatar-arc {
+  background: linear-gradient(135deg, #F6C85F, #FFE5B4);
+  animation: glowPulse 3.5s ease-in-out infinite;
+}
+
+.avatar-mia {
+  background: linear-gradient(135deg, #5EC8D8, #E5F5FF);
+}
+
+.avatar-rift {
+  background: linear-gradient(135deg, #2B1B3D, #5E4C7A);
+}
+
+.dialogue-content {
+  background: rgba(255, 255, 255, 0.86);
+  border-radius: 24rpx;
+  padding: 20rpx 24rpx;
+  border: 1rpx solid rgba(31, 42, 55, 0.06);
+  flex: 1;
+}
+
+.dialogue-text {
+  font-size: var(--font-body, 28rpx);
+  color: var(--c-text, #1F2A37);
+  line-height: 1.5;
+}
+
+@keyframes dialogueIn {
+  from {
+    opacity: 0;
+    transform: translateY(10rpx);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes glowPulse {
+  0%, 100% {
+    box-shadow: 0 0 20rpx rgba(246, 200, 95, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 35rpx rgba(246, 200, 95, 0.7);
+  }
+}

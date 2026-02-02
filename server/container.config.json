@@ -1,0 +1,20 @@
+{
+    "$schema": "https://framework.cloudbase.net/schemas/container.json",
+    "name": "tinyhabits-server",
+    "description": "点点微习惯游戏后端服务",
+    "containerPort": 80,
+    "cpu": 0.5,
+    "mem": 1,
+    "minNum": 0,
+    "maxNum": 10,
+    "policyType": "cpu",
+    "policyThreshold": 60,
+    "envParams": {
+        "NODE_ENV": "production",
+        "PORT": "80"
+    },
+    "dockerfilePath": "Dockerfile",
+    "buildDir": "",
+    "initialDelaySeconds": 10,
+    "remark": "微信云托管配置 - 需要在云托管控制台配置以下环境变量：MONGODB_URI, JWT_SECRET, DEEPSEEK_API_KEY, DOUBAO_API_KEY"
+}

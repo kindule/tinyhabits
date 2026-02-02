@@ -1,0 +1,3 @@
+<view class="tag-pill {{type}}">
+  <text>{{text}}</text>
+</view>

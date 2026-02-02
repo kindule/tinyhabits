@@ -1,0 +1,103 @@
+/* pages/wishes/index.wxss */
+.wishes-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--c-bg);
+}
+
+.dialogue-wrap {
+  padding: var(--page-pad);
+  padding-top: 40rpx;
+}
+
+.content {
+  flex: 1;
+  padding: var(--gap-md) var(--page-pad);
+  overflow-y: auto;
+}
+
+/* Duel Phase */
+.wish-card-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: var(--gap-sm) 0;
+}
+
+.wish-icon {
+  font-size: 80rpx;
+  margin-bottom: var(--gap-sm);
+}
+
+.wish-name {
+  font-size: var(--font-h2);
+  font-weight: 600;
+  margin-bottom: 8rpx;
+}
+
+.wish-desc {
+  font-size: var(--font-cap);
+  color: var(--c-subtext);
+}
+
+.grid2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--gap-md);
+}
+
+/* Destiny Phase */
+.destiny-core-wrap {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  padding: 40rpx 0;
+}
+
+.destiny-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 400rpx;
+  height: 400rpx;
+  border: 2rpx dashed var(--c-gold);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0.3;
+  pointer-events: none;
+  animation: rotate 20s linear infinite;
+}
+
+.core-card-wrap {
+    width: 320rpx; /* Constrain width of core card */
+}
+
+.wish-card-content.core .wish-icon {
+    font-size: 100rpx;
+}
+
+.flex-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gap-sm);
+}
+
+@keyframes rotate {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+.footer {
+  padding: var(--page-pad);
+  padding-bottom: calc(var(--page-pad) + env(safe-area-inset-bottom));
+}
+
+.textCenter {
+    text-align: center;
+}
+
+.mtMd {
+    margin-top: var(--gap-md);
+}

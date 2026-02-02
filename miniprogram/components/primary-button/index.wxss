@@ -1,0 +1,48 @@
+/* components/primary-button/index.wxss */
+.btn-primary {
+  width: 100%;
+  height: 96rpx;
+  border-radius: 999rpx;
+  background: linear-gradient(90deg, #F6C85F, #5EC8D8);
+  color: #FFFFFF;
+  font-size: var(--font-body, 28rpx);
+  font-weight: 500;
+  box-shadow: 0 10rpx 24rpx rgba(0, 0, 0, 0.08);
+  border: none;
+  position: relative;
+  overflow: hidden;
+  transition: transform 100ms ease-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-primary::after {
+  border: none;
+}
+
+.btn-primary:active {
+  transform: scale(0.96);
+}
+
+.btn-primary.disabled {
+  opacity: 0.5;
+}
+
+/* 光带扫过效果 */
+.btn-primary.shimmer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  animation: shimmer 200ms ease-out;
+}
+
+@keyframes shimmer {
+  to {
+    left: 100%;
+  }
+}

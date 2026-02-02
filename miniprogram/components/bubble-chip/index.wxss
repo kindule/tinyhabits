@@ -1,0 +1,57 @@
+/* components/bubble-chip/index.wxss */
+.bubble-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 16rpx 24rpx;
+  border-radius: 999rpx;
+  background: rgba(94, 200, 216, 0.18);
+  font-size: var(--font-body, 28rpx);
+  color: var(--c-text, #1F2A37);
+  position: relative;
+  transition: transform 180ms ease-out;
+  opacity: 0;
+  transform: scale(0.8);
+}
+
+.bubble-chip.visible {
+  animation: bubbleAppear 160ms ease-out forwards;
+}
+
+.bubble-chip.selected {
+  background: rgba(246, 200, 95, 0.25);
+  border: 2rpx solid var(--c-gold, #F6C85F);
+}
+
+.bubble-chip:active {
+  animation: bubblePop 180ms ease-out;
+}
+
+/* 高光效果 */
+.bubble-chip::after {
+  content: '';
+  position: absolute;
+  top: 2rpx;
+  left: 10%;
+  right: 10%;
+  height: 30%;
+  background: linear-gradient(180deg, rgba(255,255,255,0.5), transparent);
+  border-radius: 999rpx;
+  pointer-events: none;
+}
+
+@keyframes bubbleAppear {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes bubblePop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}

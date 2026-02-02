@@ -1,0 +1,10 @@
+{
+    "usingComponents": {
+        "dialogue-bubble": "/components/dialogue-bubble/index",
+        "main-card": "/components/main-card/index",
+        "primary-button": "/components/primary-button/index",
+        "tag-pill": "/components/tag-pill/index"
+    },
+    "navigationBarTitleText": "",
+    "navigationStyle": "custom"
+}

@@ -1,0 +1,6 @@
+<view class="dialogue-bubble {{showAnimation ? 'animate-in' : ''}}">
+  <view class="avatar avatar-{{character}}"></view>
+  <view class="dialogue-content">
+    <text class="dialogue-text">{{text}}</text>
+  </view>
+</view>

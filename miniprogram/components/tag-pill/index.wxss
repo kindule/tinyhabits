@@ -1,0 +1,26 @@
+/* components/tag-pill/index.wxss */
+.tag-pill {
+  display: inline-flex;
+  align-items: center;
+  height: 44rpx;
+  padding: 0 16rpx;
+  border-radius: 999rpx;
+  background: rgba(31, 42, 55, 0.06);
+  font-size: 22rpx;
+  color: rgba(31, 42, 55, 0.65);
+}
+
+.tag-pill.gold {
+  background: rgba(246, 200, 95, 0.18);
+  color: #B8860B;
+}
+
+.tag-pill.purple {
+  background: rgba(138, 125, 255, 0.18);
+  color: #8A7DFF;
+}
+
+.tag-pill.success {
+  background: rgba(46, 204, 113, 0.12);
+  color: #2ECC71;
+}

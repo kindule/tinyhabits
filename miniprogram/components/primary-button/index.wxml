@@ -1,0 +1,8 @@
+<button 
+  class="btn-primary {{shimmer ? 'shimmer' : ''}} {{disabled ? 'disabled' : ''}}"
+  disabled="{{disabled || loading}}"
+  bindtap="onTap"
+>
+  <text wx:if="{{!loading}}">{{text}}</text>
+  <text wx:else>加载中...</text>
+</button>

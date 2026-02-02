@@ -1,0 +1,123 @@
+<view class="page daily-page">
+  <view class="sceneHeader sceneHeader--daily">
+     <view class="sceneOrb sceneOrb--daily"></view>
+  </view>
+
+  <!-- 进度条 -->
+  <view class="progress-header">
+    <text class="day-text">Day {{day}} / 7</text>
+    <view class="day-dots">
+      <view 
+        wx:for="{{7}}" 
+        wx:key="index"
+        class="day-dot {{index < day ? (index + 1 === day && todayDone ? 'filled' : (index + 1 < day ? 'filled' : '')) : ''}} {{index + 1 === day && !todayDone ? 'active' : ''}}"
+      ></view>
+    </view>
+  </view>
+  
+  <!-- 对话区 -->
+  <view class="dialogue-wrap">
+    <dialogue-bubble 
+      character="{{speaker.id}}"
+      text="{{speaker.text}}"
+      animate="{{true}}"
+    />
+  </view>
+  
+  <view class="content">
+      <!-- 今日卡片 -->
+      <view class="card-wrap">
+        <main-card class="daily-card {{todayDone ? 'completed' : ''}}">
+          <view class="card-header">
+            <text class="card-title">✨ 今日咒语 ✨</text>
+          </view>
+          
+          <view class="card-body">
+            <view class="card-action">
+               <text class="emoji">{{card.anchorEmoji || '✨'}}</text> {{card.anchor ? card.anchor + ' → ' : ''}}{{card.name}}
+            </view>
+          </view>
+          
+          <view class="card-footer">
+            <view class="card-meta">
+              <tag-pill text="⏱️ {{card.durationText}}" />
+              <tag-pill text="难度 {{card.difficultyStars}}" />
+            </view>
+            <view class="card-tags">
+              <tag-pill text="{{currentWishName}}" type="gold" />
+              <tag-pill text="{{card.type === 'base' ? '保底卡' : card.type === 'main' ? '主线卡' : '彩蛋卡'}}" type="{{card.type === 'main' ? 'purple' : 'default'}}" />
+            </view>
+          </view>
+        </main-card>
+      </view>
+      
+      <!-- 连续天数 -->
+      <view class="streak-info" wx:if="{{streak > 0}}">
+        <text class="streak-text">🔥 已连续坚持 {{streak}} 天</text>
+      </view>
+      
+      <!-- 救援提示 -->
+      <view class="rescue-hint" wx:if="{{isRescue}}">
+        <text>⛑️ 救援咒语已准备好，微光不会消失</text>
+      </view>
+  </view>
+  
+  <!-- 底部按钮 -->
+  <view class="footer">
+    <primary-button 
+      wx:if="{{stage === 'ready'}}"
+      text="开始施放"
+      bind:tap="onStart"
+    />
+    <primary-button 
+      wx:elif="{{stage === 'casting'}}"
+      text="完成 ✨"
+      bind:tap="onComplete"
+    />
+     <view wx:elif="{{stage === 'completed' || stage === 'encourage'}}" class="completed-hint">
+        <view class="mbSm"><text class="success-icon">✅</text></view>
+        <view class="textSub">今日已完成，明天见！</view>
+    </view>
+  </view>
+  
+  <!-- 裂隙击碎浮层 -->
+  <view class="rift-overlay {{stage === 'rift' ? 'visible' : ''}}">
+    <view class="rift-card {{isShattering ? 'shaking' : ''}}">
+      <view class="rift-avatar-wrap">
+          <view class="rift-avatar"></view>
+      </view>
+      <text class="rift-message">{{riftDeclaration}}</text>
+      <button class="shatter-btn" bindtap="onShatter">
+        击碎裂隙 💥
+      </button>
+    </view>
+  </view>
+  
+  <!-- 完成庆祝浮层 -->
+  <view class="celebration-overlay {{stage === 'encourage' ? 'visible' : ''}}">
+    <view class="celebration-bg {{isBright ? 'bright' : ''}}"></view>
+    <view class="celebration-content">
+      <dialogue-bubble 
+        character="arc"
+        text="{{speaker.text}}"
+        animate="{{true}}"
+      />
+      <view class="celebration-stats">
+        <text class="stat-item">Day {{day}} 完成!</text>
+        <text class="stat-item highlight">+10 积分</text>
+        <text class="stat-item">🔥 连续 {{streak}} 天</text>
+      </view>
+      
+      <primary-button 
+        wx:if="{{!showCityComplete}}" 
+        text="继续" 
+        bind:tap="onFinish" 
+       />
+      <primary-button 
+        wx:else 
+        text="进入下一座城市" 
+        bind:tap="onNextCity" 
+       />
+    </view>
+  </view>
+</view>

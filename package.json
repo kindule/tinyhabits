@@ -1,0 +1,15 @@
+{
+  "name": "tinyhabits",
+  "version": "1.0.0",
+  "description": "微信小程序 - 习惯养成游戏",
+  "scripts": {
+    "dev": "npm run dev --prefix backend",
+    "start": "npm start --prefix backend",
+    "setup": "./dev.sh",
+    "backend": "npm run dev --prefix backend",
+    "backend:debug": "npm run dev:inspect --prefix backend"
+  },
+  "keywords": ["wechat", "miniprogram", "habits"],
+  "author": "",
+  "license": "MIT"
+}

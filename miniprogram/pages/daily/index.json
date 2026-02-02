@@ -1,0 +1,11 @@
+{
+  "usingComponents": {
+    "dialogue-bubble": "/components/dialogue-bubble/index",
+    "main-card": "/components/main-card/index",
+    "primary-button": "/components/primary-button/index",
+    "bubble-chip": "/components/bubble-chip/index",
+    "tag-pill": "/components/tag-pill/index"
+  },
+  "navigationBarTitleText": "今日微行动",
+  "navigationStyle": "custom"
+}
