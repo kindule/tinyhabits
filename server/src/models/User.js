@@ -1,72 +1,61 @@
-const mongoose = require('mongoose');
+const { DataTypes } = require('sequelize');
 
-const userSchema = new mongoose.Schema({
-    // 微信OpenID(唯一标识)
-    openId: {
-        type: String,
-        required: true,
-        unique: true,
-        index: true
-    },
+module.exports = (sequelize) => {
+    const User = sequelize.define('User', {
+        id: {
+            type: DataTypes.BIGINT.UNSIGNED,
+            autoIncrement: true,
+            primaryKey: true
+        },
+        openId: {
+            type: DataTypes.STRING(64),
+            allowNull: false,
+            unique: true,
+            field: 'open_id'
+        },
+        unionId: {
+            type: DataTypes.STRING(64),
+            allowNull: true,
+            field: 'union_id'
+        },
+        nickname: {
+            type: DataTypes.STRING(32),
+            allowNull: true
+        },
+        avatarUrl: {
+            type: DataTypes.STRING(512),
+            allowNull: true,
+            field: 'avatar_url'
+        },
+        lastLoginAt: {
+            type: DataTypes.DATE,
+            defaultValue: DataTypes.NOW,
+            field: 'last_login_at'
+        }
+    }, {
+        tableName: 'users',
+        timestamps: true,
+        underscored: true,
+        indexes: [
+            { fields: ['open_id'] },
+            { fields: ['union_id'] },
+            { fields: ['created_at'] }
+        ]
+    });
 
-    // 微信UnionID(可选,用于多平台)
-    unionId: {
-        type: String,
-        sparse: true
-    },
-
-    // 昵称(可选展示)
-    nickname: {
-        type: String,
-        trim: true,
-        maxlength: 32
-    },
-
-    // 头像URL
-    avatarUrl: {
-        type: String
-    },
-
-    // 游戏状态(内嵌文档)
-    gameState: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'GameState'
-    },
-
-    // 元数据
-    createdAt: {
-        type: Date,
-        default: Date.now
-    },
-    lastLoginAt: {
-        type: Date,
-        default: Date.now
-    }
-}, {
-    timestamps: true,
-    toJSON: { virtuals: true },
-    toObject: { virtuals: true }
-});
-
-// 索引
-userSchema.index({ createdAt: -1 });
-
-// 静态方法: 通过OpenID查找或创建
-userSchema.statics.findOrCreateByOpenId = async function (openId, additionalData = {}) {
-    let user = await this.findOne({ openId });
-
-    if (!user) {
-        user = await this.create({
-            openId,
-            ...additionalData
+    // Static method: find or create by OpenID
+    User.findOrCreateByOpenId = async function (openId, additionalData = {}) {
+        const [user, created] = await this.findOrCreate({
+            where: { openId },
+            defaults: { openId, ...additionalData }
         });
-    } else {
-        // 更新最后登录时间
-        user.lastLoginAt = new Date();
-        await user.save();
-    }
 
-    return user;
+        if (!created) {
+            await user.update({ lastLoginAt: new Date() });
+        }
+
+        return user;
+    };
+
+    return User;
 };
-
-module.exports = mongoose.model('User', userSchema);

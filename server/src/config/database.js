@@ -1,14 +1,23 @@
-const mongoose = require('mongoose');
-const config = require('./index');
+const { sequelize } = require('../models');
 
 async function connectDatabase() {
     try {
-        await mongoose.connect(config.mongodb.uri);
-        console.log(`MongoDB connected: ${config.mongodb.uri}`);
+        await sequelize.authenticate();
+        console.log('MySQL connected successfully');
+
+        // Sync models (create tables if not exist)
+        if (process.env.NODE_ENV !== 'production') {
+            await sequelize.sync({ alter: true });
+            console.log('Database synchronized');
+        }
     } catch (error) {
-        console.error('MongoDB connection error:', error);
+        console.error('MySQL connection error:', error);
         throw error;
     }
 }
 
-module.exports = { connectDatabase };
+async function closeDatabaseConnection() {
+    await sequelize.close();
+}
+
+module.exports = { connectDatabase, closeDatabaseConnection };

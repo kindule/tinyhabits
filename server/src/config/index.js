@@ -4,9 +4,13 @@ module.exports = {
     env: process.env.NODE_ENV || 'development',
     port: parseInt(process.env.PORT, 10) || 3000,
 
-    // MongoDB
-    mongodb: {
-        uri: process.env.MONGODB_URI || 'mongodb://localhost:27017/tinyhabits'
+    // MySQL
+    mysql: {
+        host: process.env.MYSQL_HOST || 'localhost',
+        port: parseInt(process.env.MYSQL_PORT, 10) || 3306,
+        database: process.env.MYSQL_DATABASE || 'tinyhabits',
+        username: process.env.MYSQL_USER || 'root',
+        password: process.env.MYSQL_PASSWORD || 'letsg0123'
     },
 
     // JWT

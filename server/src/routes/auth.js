@@ -1,7 +1,7 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const axios = require('axios');
-const User = require('../models/User');
+const { User } = require('../models');
 const config = require('../config');
 
 const router = express.Router();
@@ -56,7 +56,7 @@ router.post('/wechat', async (req, res, next) => {
 
         // 生成JWT
         const token = jwt.sign(
-            { userId: user._id, openId: openid },
+            { userId: user.id, openId: openid },
             config.jwt.secret,
             { expiresIn: config.jwt.expiresIn }
         );
@@ -66,7 +66,7 @@ router.post('/wechat', async (req, res, next) => {
             token,
             expiresIn: 7 * 24 * 60 * 60, // 7天(秒)
             user: {
-                id: user._id,
+                id: user.id,
                 nickname: user.nickname,
                 avatarUrl: user.avatarUrl
             }
