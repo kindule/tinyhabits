@@ -46,6 +46,12 @@ module.exports = {
         expiresIn: process.env.JWT_EXPIRES_IN || '7d'
     },
 
+    // 微信小程序
+    wechat: {
+        appId: process.env.WECHAT_APP_ID || '',
+        appSecret: process.env.WECHAT_APP_SECRET || ''
+    },
+
     // AI服务
     ai: {
         deepseekApiKey: process.env.DEEPSEEK_API_KEY,
