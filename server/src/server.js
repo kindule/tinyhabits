@@ -1,11 +1,23 @@
+const fs = require('fs');
+const path = require('path');
 const app = require('./app');
 const config = require('./config');
 const { connectDatabase } = require('./config/database');
 
 const PORT = config.port || 3000;
 
+// 读取构建时写入的 commit ID
+function getCommitId() {
+    try {
+        return fs.readFileSync(path.join(__dirname, '..', 'commit_id.txt'), 'utf-8').trim();
+    } catch {
+        return 'unknown';
+    }
+}
+
 async function startServer() {
     console.log('========== SERVER STARTING ==========');
+    console.log('Commit ID:', getCommitId());
     console.log('Node version:', process.version);
     console.log('Working directory:', process.cwd());
     console.log('Config port:', PORT);

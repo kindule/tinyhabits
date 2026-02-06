@@ -17,6 +17,9 @@ yarn-error.log*
 # Test coverage
 coverage/
 
+# Build artifacts
+commit_id.txt
+
 # System files
 .DS_Store
 Thumbs.db

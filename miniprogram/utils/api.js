@@ -5,7 +5,7 @@
 // Use local IP for development or production URL
 // In real dev, we might use http://localhost:3002 but for MP we need actual IP or configured domain
 // For now, we put a placeholder or localhost (which works in simulator if "Start local server" is handled by IDE, but usually requires IP)
-const API_BASE = 'http://localhost:3002';
+const API_BASE = 'https://express-2sho-223278-8-1401948148.sh.run.tcloudbase.com';
 
 /**
  * 发起请求
