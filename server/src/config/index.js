@@ -1,12 +1,28 @@
 require('dotenv').config();
 
+// 解析 MYSQL_ADDRESS（云托管格式: host:port）
+function parseMysqlAddress() {
+    const address = process.env.MYSQL_ADDRESS;
+    if (address) {
+        const [host, port] = address.split(':');
+        return { host, port: parseInt(port, 10) || 3306 };
+    }
+    return {
+        host: process.env.MYSQL_HOST || 'localhost',
+        port: parseInt(process.env.MYSQL_PORT, 10) || 3306
+    };
+}
+
+const mysqlAddr = parseMysqlAddress();
+
 // 启动时打印环境变量，帮助定位云托管配置问题
 console.log('========== ENV DEBUG ==========');
 console.log('NODE_ENV:', process.env.NODE_ENV);
-console.log('MYSQL_HOST:', process.env.MYSQL_HOST || '(未设置, 将使用默认值 localhost)');
-console.log('MYSQL_PORT:', process.env.MYSQL_PORT || '(未设置, 将使用默认值 3306)');
+console.log('MYSQL_ADDRESS:', process.env.MYSQL_ADDRESS || '(未设置)');
+console.log('MYSQL_HOST (resolved):', mysqlAddr.host);
+console.log('MYSQL_PORT (resolved):', mysqlAddr.port);
 console.log('MYSQL_DATABASE:', process.env.MYSQL_DATABASE || '(未设置, 将使用默认值 tinyhabits)');
-console.log('MYSQL_USER:', process.env.MYSQL_USER || '(未设置, 将使用默认值 root)');
+console.log('MYSQL_USERNAME:', process.env.MYSQL_USERNAME || process.env.MYSQL_USER || '(未设置, 将使用默认值 root)');
 console.log('MYSQL_PASSWORD:', process.env.MYSQL_PASSWORD ? '******(已设置)' : '(未设置, 将使用默认值)');
 console.log('PORT:', process.env.PORT || '(未设置, 将使用默认值 3000)');
 console.log('================================');
@@ -17,10 +33,10 @@ module.exports = {
 
     // MySQL
     mysql: {
-        host: process.env.MYSQL_HOST || 'localhost',
-        port: parseInt(process.env.MYSQL_PORT, 10) || 3306,
+        host: mysqlAddr.host,
+        port: mysqlAddr.port,
         database: process.env.MYSQL_DATABASE || 'tinyhabits',
-        username: process.env.MYSQL_USER || 'root',
+        username: process.env.MYSQL_USERNAME || process.env.MYSQL_USER || 'root',
         password: process.env.MYSQL_PASSWORD || 'letsg0123'
     },
 
