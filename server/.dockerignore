@@ -18,7 +18,8 @@ __tests__/
 .editorconfig
 nodemon.json
 
-# Git（保留 .git 用于构建时获取 commit ID）
+# Git
+.git/
 .gitignore
 
 # 日志

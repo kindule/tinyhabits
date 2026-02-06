@@ -1,12 +1,4 @@
 # 微信云托管 Dockerfile
-
-# 第一阶段：获取 Git Commit ID
-FROM alpine/git:latest AS git-info
-WORKDIR /repo
-COPY .git .git
-RUN git rev-parse --short HEAD > /commit_id.txt
-
-# 第二阶段：构建应用
 FROM node:18-alpine
 
 # 设置工作目录
@@ -24,8 +16,8 @@ RUN npm ci --only=production && npm cache clean --force
 # 复制源代码
 COPY src/ ./src/
 
-# 从第一阶段复制 commit ID
-COPY --from=git-info /commit_id.txt ./commit_id.txt
+# commit ID 文件（由 git pre-commit hook 自动更新）
+COPY commit_id.txt ./commit_id.txt
 
 # 微信云托管要求监听 80 端口
 ENV PORT=80
