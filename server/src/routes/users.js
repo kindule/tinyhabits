@@ -1,20 +1,26 @@
 const express = require('express');
 const router = express.Router();
 const userController = require('../controllers/userController');
+const authMiddleware = require('../middleware/auth');
 
-// 获取游戏状态
+// === Token-based routes (openId from JWT) ===
+// 将req.openId映射到req.params.openId，复用已有controller
+function injectOpenId(req, res, next) {
+    req.params.openId = req.openId;
+    next();
+}
+
+router.get('/state', authMiddleware, injectOpenId, userController.getGameState);
+router.put('/state', authMiddleware, injectOpenId, userController.updateGameState);
+router.post('/complete', authMiddleware, injectOpenId, userController.completeDaily);
+router.post('/reset', authMiddleware, injectOpenId, userController.resetCycle);
+router.post('/sync', authMiddleware, injectOpenId, userController.syncState);
+
+// === Legacy routes (openId in URL) ===
 router.get('/:openId/state', userController.getGameState);
-
-// 更新游戏状态
 router.put('/:openId/state', userController.updateGameState);
-
-// 完成每日任务
 router.post('/:openId/complete', userController.completeDaily);
-
-// 重置周期
 router.post('/:openId/reset', userController.resetCycle);
-
-// 同步状态
 router.post('/:openId/sync', userController.syncState);
 
 module.exports = router;
