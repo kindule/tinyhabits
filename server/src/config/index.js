@@ -1,5 +1,16 @@
 require('dotenv').config();
 
+// 启动时打印环境变量，帮助定位云托管配置问题
+console.log('========== ENV DEBUG ==========');
+console.log('NODE_ENV:', process.env.NODE_ENV);
+console.log('MYSQL_HOST:', process.env.MYSQL_HOST || '(未设置, 将使用默认值 localhost)');
+console.log('MYSQL_PORT:', process.env.MYSQL_PORT || '(未设置, 将使用默认值 3306)');
+console.log('MYSQL_DATABASE:', process.env.MYSQL_DATABASE || '(未设置, 将使用默认值 tinyhabits)');
+console.log('MYSQL_USER:', process.env.MYSQL_USER || '(未设置, 将使用默认值 root)');
+console.log('MYSQL_PASSWORD:', process.env.MYSQL_PASSWORD ? '******(已设置)' : '(未设置, 将使用默认值)');
+console.log('PORT:', process.env.PORT || '(未设置, 将使用默认值 3000)');
+console.log('================================');
+
 module.exports = {
     env: process.env.NODE_ENV || 'development',
     port: parseInt(process.env.PORT, 10) || 3000,
